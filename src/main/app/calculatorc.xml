@@ -21,9 +21,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <apikit:console config-ref="calculatorc-config" doc:name="APIkit Console"/>
     </flow>
     <flow name="get:/add:calculatorc-config">
-        
-
-<dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/xml
 %namespace ns0 http://tempuri.org/
@@ -36,6 +34,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 }]]></dw:set-payload>
         </dw:transform-message>
 
+
         <ws:consumer config-ref="Web_Service_Consumer" operation="Add" doc:name="Web Service Consumer"/>
         <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
@@ -44,8 +43,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 ---
 {
  resultadoSuma:payload.ns0#AddResponse.ns0#AddResult
-}]]></dw:set-payload>
+}
+]]></dw:set-payload>
         </dw:transform-message>
+
 
     </flow>
     <apikit:mapping-exception-strategy name="calculatorc-apiKitGlobalExceptionMapping">
