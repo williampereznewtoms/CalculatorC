@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+    <munit:config name="munit" doc:name="MUnit configuration" mock-connectors="false" mock-inbounds="false"/>
+    <spring:beans>
+        <spring:import resource="classpath:calculatorc.xml"/>
+    </spring:beans>
+    <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8081" basePath="api" doc:name="HTTP Request Configuration"/>
+    <munit:test name="calculatorc-test-suite-get:/add:calculatorc-configTest" description="Test">
+                <http:request config-ref="HTTP_Request_Configuration" path="add" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:query-param paramName="num1" value="4"/>
+                <http:query-param paramName="num2" value="4"/>
+            </http:request-builder>
+        </http:request>
+        <munit:assert-not-null doc:name="Assert Not Null Payload"/>
+   <munit:assert-on-equals actualValue="#[message.inboundProperties.'http.status']" expectedValue="#[200]" doc:name="Assert Equals"/>
+
+    </munit:test>
+</mule>
